@@ -53,16 +53,16 @@ public class ClickStreamMapper extends Mapper<LongWritable, Text, Text, Text> {
 
     public static String APACHE_LOG_REGEX = StringUtils.join(items, "\\s");
 
-
-
 //    @Override
-//    protected void map(LongWritable key, Text value, Mapper<LongWritable, Text, Text, Text>.Context context) throws IOException, InterruptedException {
+//    protected void map(Text key, Text value, Mapper<Text, Text, Text, Text>.Context context) throws IOException, InterruptedException {
 //        super.map(key, value, context);
 //    }
 
 
-        @Override
-    protected void map(LongWritable key, Text value, Context context)
+//protected void map(LongWritable key, Text value, Context context)
+
+    @Override
+    protected void map(LongWritable key, Text value, Mapper<LongWritable, Text, Text, Text>.Context context)
             throws IOException, InterruptedException {
         String log = value.toString();
 
@@ -77,7 +77,6 @@ public class ClickStreamMapper extends Mapper<LongWritable, Text, Text, Text> {
         String userAgentStr = null;
         String cookieStr = null;
         String hostNameStr = null;
-
         if (matcher.find()) {
             ipStr = matcher.group("ip");
             receiveTimeStr = matcher.group("receivetime");
@@ -106,12 +105,17 @@ public class ClickStreamMapper extends Mapper<LongWritable, Text, Text, Text> {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
-            // 将url中的无效字符串去掉
-            urlStr = urlStr.substring(5);
-            // 重新接着成url字符串
-            url = "\"" + hostNameStr + urlStr;
-
+            try {
+                // 将url中的无效字符串去掉
+                urlStr = urlStr.substring(5);
+                // 重新接着成url字符串
+                url = "\"" + hostNameStr + urlStr;
+            } catch (StringIndexOutOfBoundsException e) {
+                //此处出错
+                System.out.println(urlStr);
+                System.out.println("ok");
+                e.printStackTrace();
+            }
 
             // 用户浏览器信息的正则表达式
             String userAgentRegex = "^(?<h1>.+)\\s(?<h2>\\(.+\\))\\s(?<h3>.+)\\s(?<h4>\\(.+\\))\\s(?<h5>.+)\\s(?<h6>.+)\\s(?<h7>.+)$";
@@ -130,7 +134,7 @@ public class ClickStreamMapper extends Mapper<LongWritable, Text, Text, Text> {
 
             // 使用Hashmap保存cookie信息
             HashMap<String, String> cookies = new HashMap<String, String>();
-            if (cookieStr.length()-1<=1){
+            if (cookieStr.length() - 1 <= 1) {
                 return;
             }
             String[] strs = cookieStr.substring(1, cookieStr.length() - 1).split(";");

@@ -7,12 +7,12 @@ import org.apache.hadoop.io.NullWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Reducer;
 
-public class ClickStreamReducer extends Reducer<LongWritable, Text, NullWritable, Text> {
+public class ClickStreamReducer extends Reducer<Text, Text, NullWritable, Text> {
 	// 表示前一个sessionId
 	public String preSessionId = "-";
 
 	@Override
-	protected void reduce(LongWritable key, Iterable<Text> values, Reducer<LongWritable, Text, NullWritable, Text>.Context context) throws IOException, InterruptedException {
+	protected void reduce(Text key, Iterable<Text> values, Reducer<Text, Text, NullWritable, Text>.Context context) throws IOException, InterruptedException {
 		super.reduce(key, values, context);
 	}
 

@@ -9,7 +9,9 @@ public class SortComparator extends WritableComparator {
 		super(Text.class, true);
 	}
 
-	@Override
+
+
+		@Override
 	public int compare(WritableComparable w1, WritableComparable w2) {
 
 		String[] comp1 = w1.toString().split("&");

@@ -39,8 +39,14 @@ public class Driver {
             //设置writable传入传出参数
 //            job.setOutputKeyClass(Text.class);
 //            job.setOutputValueClass(Text.class);
-            job.setOutputKeyClass(LongWritable.class);
+//            job.setOutputKeyClass(LongWritable.class);
+//            job.setOutputValueClass(Text.class);
+            //设置map reduce key value
+            job.setMapOutputKeyClass(Text.class);
+            job.setMapOutputValueClass(Text.class);
+            job.setOutputKeyClass(Text.class);
             job.setOutputValueClass(Text.class);
+
             job.setOutputFormatClass(TextOutputFormat.class);
             job.setPartitionerClass(SessionIdPartitioner.class);
             job.setSortComparatorClass(SortComparator.class);
