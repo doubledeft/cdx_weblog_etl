@@ -2,7 +2,9 @@ package etl.clean;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
+import org.apache.hadoop.io.Writable;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
@@ -15,25 +17,29 @@ public class Driver {
     public static void main(String[] args) {
         try {
             Configuration conf = new Configuration();
+
             String HDFS = "hdfs://hadoop-master:9000/";
             HdfsUtil hdfsUtil = new HdfsUtil(HDFS, conf);
             // 指定带运行参数的目录为输入输出目录
-//			String[] otherArgs = new GenericOptionsParser(conf, args).getRemainingArgs();
-//			if (otherArgs.length != 2) {
-//				System.err.println("Usage: Data Deduplication <in> <out>");
-//				System.exit(2);
-//			}
+			String[] otherArgs = new GenericOptionsParser(conf, args).getRemainingArgs();
+			if (otherArgs.length != 2) {
+				System.err.println("Usage: Data Deduplication <in> <out>");
+				System.exit(2);
+			}
             //修改传入参数
 //            String inputPath = HDFS + "weblog/apachelogs/apache_simple.log";
 //            String outputPath = HDFS + "user/hive/warehouse/testdb.db/clickstream_log/dt=2019-05-28";
-            String inputPath = HDFS + args[0];
-            String outputPath = HDFS +args[1];
+            String inputPath = HDFS + otherArgs[0];
+            String outputPath = HDFS +otherArgs[1];
             Job job = Job.getInstance(conf);
             job.setJobName("clickstream_etl");
             job.setJarByClass(Driver.class);
             job.setMapperClass(ClickStreamMapper.class);
             job.setReducerClass(ClickStreamReducer.class);
-            job.setOutputKeyClass(Text.class);
+            //设置writable传入传出参数
+//            job.setOutputKeyClass(Text.class);
+//            job.setOutputValueClass(Text.class);
+            job.setOutputKeyClass(LongWritable.class);
             job.setOutputValueClass(Text.class);
             job.setOutputFormatClass(TextOutputFormat.class);
             job.setPartitionerClass(SessionIdPartitioner.class);
@@ -97,3 +103,4 @@ public class Driver {
 
 //修改传入参数后修改路径
 //hadoop jar clickstream_etl.jar etl.clean.Driver /tmp/apache_log/2019-06-12/ /user/hive/warehouse/clickstream_log/dt=2019-06-12
+//hadoop jar clickstream_etl.jar etl.clean.Driver /tmp/apache_log/2019-06-13/ /user/hive/warehouse/clickstream_log/dt=2019-06-13

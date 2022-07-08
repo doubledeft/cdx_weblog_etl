@@ -10,7 +10,8 @@ public class IpParser {
         //java.util.logging.SimpleFormatter
     }
 
-    private static final String DATA_PATH = "./datafile/ip.dat";
+//    private static final String DATA_PATH = "./datafile/ip.dat";
+    private static final String DATA_PATH = "./Users/chendiexin/Documents/大三下/小学期/示例项目/weblog_etl/src/main/java/utils/datafile/ip.dat";
 
     // 获取指定IP的城市
     public static String getCountry(String ip) {

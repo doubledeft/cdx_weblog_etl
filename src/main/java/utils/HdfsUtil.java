@@ -14,7 +14,7 @@ import org.apache.hadoop.mapred.JobConf;
 
 public class HdfsUtil {
 
-    private static final String HDFS = "hdfs://master:9000/";
+    private static final String HDFS = "hdfs://master-test:9000/";
 
     public HdfsUtil(Configuration conf) {
         this(HDFS, conf);

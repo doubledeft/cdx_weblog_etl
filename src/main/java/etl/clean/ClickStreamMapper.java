@@ -53,7 +53,15 @@ public class ClickStreamMapper extends Mapper<LongWritable, Text, Text, Text> {
 
     public static String APACHE_LOG_REGEX = StringUtils.join(items, "\\s");
 
-    @Override
+
+
+//    @Override
+//    protected void map(LongWritable key, Text value, Mapper<LongWritable, Text, Text, Text>.Context context) throws IOException, InterruptedException {
+//        super.map(key, value, context);
+//    }
+
+
+        @Override
     protected void map(LongWritable key, Text value, Context context)
             throws IOException, InterruptedException {
         String log = value.toString();
@@ -122,6 +130,9 @@ public class ClickStreamMapper extends Mapper<LongWritable, Text, Text, Text> {
 
             // 使用Hashmap保存cookie信息
             HashMap<String, String> cookies = new HashMap<String, String>();
+            if (cookieStr.length()-1<=1){
+                return;
+            }
             String[] strs = cookieStr.substring(1, cookieStr.length() - 1).split(";");
             for (int i = 0; i < strs.length; i++) {
                 if (strs[i].contains("=")) {
