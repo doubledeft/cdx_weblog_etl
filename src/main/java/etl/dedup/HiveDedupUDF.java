@@ -2,7 +2,6 @@ package etl.dedup;
 
 import org.apache.hadoop.hive.ql.exec.UDF;
 import org.apache.hadoop.io.Text;
-
 /**
  * Hive自定义函数，用于数据去重使用
  * 
