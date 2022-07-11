@@ -110,3 +110,7 @@ public class Driver {
 //修改传入参数后修改路径
 //hadoop jar clickstream_etl.jar etl.clean.Driver /tmp/apache_log/2019-06-12/ /user/hive/warehouse/clickstream_log/dt=2019-06-12
 //hadoop jar clickstream_etl.jar etl.clean.Driver /tmp/apache_log/2019-06-13/ /user/hive/warehouse/clickstream_log/dt=2019-06-13
+//hadoop jar clickstream_etl.jar etl.clean.Driver /tmp/apache_log/2019-06-20/ /user/hive/warehouse/clickstream_log/dt=2019-06-20
+
+//导入后修改hive分区  msck repair table clickstream_log;
+//删除分区数据  ALTER TABLE clickstream_log DROP PARTITION (dt='__HIVE_DEFAULT_PARTITION__');
